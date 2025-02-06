@@ -4,10 +4,10 @@ import jwt from "jsonwebtoken";
 import { QueryTypes } from "sequelize";
 
 const schema = Joi.object({
-  firstName: Joi.string().required().messages({
+  first_name: Joi.string().required().messages({
     "any.required": "Parameter first_name harus di isi",
   }),
-  lastName: Joi.string().required().messages({
+  last_name: Joi.string().required().messages({
     "any.required": "Parameter last_name harus di isi",
   }),
   email: Joi.string().email().required().messages({
@@ -20,15 +20,15 @@ const schema = Joi.object({
 });
 
 const signup = async (req, res) => {
-  const { firstName, lastName, email, password } = req.body;
+  const { first_name, last_name, email, password } = req.body;
 
   try {
-    await schema.validateAsync({ firstName, lastName, email, password });
+    await schema.validateAsync({ first_name, last_name, email, password });
     const today = new Date();
     const results = await sequelize.query(
       "INSERT INTO `memberships` (`id`, `first_name`, `last_name`, `email`, `password`, `profile_image`, `created_at`, `updated_at`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)",
       {
-        replacements: [firstName, lastName, email, password, null, today, today],
+        replacements: [first_name, last_name, email, password, null, today, today],
         type: QueryTypes.INSERT,
       }
     );
@@ -64,7 +64,7 @@ const login = async (req, res) => {
   const { email, password } = req.body;
   try {
     await schema
-      .fork(["firstName", "lastName"], (schema) => schema.optional())
+      .fork(["first_name", "last_name"], (schema) => schema.optional())
       .validateAsync({ email, password });
     const results = await sequelize.query(
       "SELECT email FROM memberships WHERE email = ? AND password = ?",
