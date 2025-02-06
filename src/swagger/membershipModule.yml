@@ -192,3 +192,65 @@ tags:
                 status: 108
                 message: Token tidak tidak valid atau kadaluwarsa
                 data: null
+/profile/update:
+  put:
+    description: Digunakan untuk mengupdate data profile User. Service ini harus menggunakan Bearer Token JWT untuk mengaksesnya.
+    tags: [Module Membership]
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - first_name
+              - last_name
+            properties:
+              first_name:
+                type: string
+              last_name:
+                type: string
+            example:
+              first_name: new
+              last_name: username
+    responses:
+      200:
+        description: Request Successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+                data:
+                  type: null
+              example:
+                status: 0
+                message: Sukses
+                data: 
+                  email: user@gmail.com
+                  first_name: user
+                  last_name: name
+                  profile_image: https://static.vecteezy.com/system/resources/previews/005/544/718/non_2x/profile-icon-design-free-vector.jpg
+      401:
+        description: Unauthorized
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+                data:
+                  type: null
+              example:
+                status: 108
+                message: Token tidak tidak valid atau kadaluwarsa
+                data: null
