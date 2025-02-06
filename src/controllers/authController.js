@@ -1,5 +1,6 @@
 import sequelize from "../config/connection.js";
 import Joi from "joi";
+import jwt from "jsonwebtoken";
 import { QueryTypes } from "sequelize";
 
 const schema = Joi.object({
@@ -31,18 +32,71 @@ const signup = async (req, res) => {
         type: QueryTypes.INSERT,
       }
     );
-    res.status(200).json({ status: 200, message: "Registrasi berhasil silahkan login", data: null });
+    res
+      .status(200)
+      .json({ status: 200, message: "Registrasi berhasil silahkan login", data: null });
   } catch (error) {
     // joi errors
-    if (error.details) return res.status(400).json({ status: 102, message: error.details[0].message, data: null });
+    if (error.details)
+      return res.status(400).json({ status: 102, message: error.details[0].message, data: null });
 
     // database errors
-    const column = error.errors[0].path
-    const errorType = error.errors[0].type
-    console.log(error)
-    if(errorType === "unique violation") return res.status(400).json({ status: 400, message: `${column} sudah terdaftar`, data: null });
+    const column = error.errors[0].path;
+    const errorType = error.errors[0].type;
+    console.log(error);
+    if (errorType === "unique violation")
+      return res
+        .status(400)
+        .json({ status: 400, message: `${column} sudah terdaftar`, data: null });
     return res.status(500).json({ status: 500, message: "Internal Server Error", data: null });
   }
 };
 
-export { signup };
+const generateToken = (data) => {
+  const privateKey = process.env.PRIVATE_KEY;
+  const expiresIn = 43200;
+  const accessToken = jwt.sign(data, privateKey, { expiresIn });
+
+  return { accessToken, expiresIn };
+};
+
+const login = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    await schema
+      .fork(["firstName", "lastName"], (schema) => schema.optional())
+      .validateAsync({ email, password });
+    const results = await sequelize.query(
+      "SELECT email FROM memberships WHERE email = ? AND password = ?",
+      {
+        replacements: [email, password],
+        type: QueryTypes.SELECT,
+      }
+    );
+
+    if (!results.length) throw { status: 103, message: "Username atau password salah", data: null };
+
+    const { accessToken } = generateToken({
+      email: results[0].email,
+    });
+    res.status(200).json({
+      status: 200,
+      message: "Login Sukses",
+      data: {
+        token: accessToken,
+      },
+    });
+  } catch (error) {
+    // joi errors
+    if (error.details)
+      return res.status(400).json({ status: 102, message: error.details[0].message, data: null });
+
+    if (error.message === "Username atau password salah")
+      return res.status(401).json({ status: 103, message: "Internal Server Error", data: null });
+
+    // default error
+    return res.status(500).json({ status: 500, message: "Internal Server Error", data: null });
+  }
+};
+
+export { signup, login };
