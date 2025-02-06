@@ -2,6 +2,7 @@ console.log("[server]: Wait a moment!");
 
 import express from "express";
 import dotenv from "dotenv";
+import routers from "./routers/router.js";
 
 dotenv.config();
 
@@ -11,6 +12,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const port = process.env.PORT || 3000;
+
+app.use("/", routers);
 
 app.get("/", (_, res) => {
   res.send("Welcome!!");
