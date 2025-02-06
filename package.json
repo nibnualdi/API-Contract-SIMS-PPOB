@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "dev": "npx nodemon src/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "createdb": "npx sequelize-cli db:create",
+    "migrate:up": "npx sequelize-cli db:migrate",
+    "migrate:undo": "npx sequelize-cli db:migrate:undo"
   },
   "keywords": [],
   "author": "",
