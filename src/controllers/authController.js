@@ -14,7 +14,7 @@ const schema = Joi.object({
     "any.required": "Parameter email harus di isi",
     "string.email": "Paramter email tidak sesuai format",
   }),
-  password: Joi.string().required().messages({
+  password: Joi.string().min(8).required().messages({
     "any.required": "Parameter password harus di isi",
   }),
 });
