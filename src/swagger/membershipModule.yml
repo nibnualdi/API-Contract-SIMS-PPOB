@@ -1,0 +1,149 @@
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      name: Authorization
+      description: "Bearer token to access these api endpoints"
+
+tags:
+  name: Module Membership
+/registration:
+  post:
+    description: Digunakan untuk melakukan registrasi User agar bisa Login kedalam aplikasi.
+    tags: [Module Membership]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - email
+              - first_name
+              - last_name
+              - password
+            properties:
+              email:
+                type: string
+              first_name:
+                type: string
+              last_name:
+                type: string
+              password:
+                type: string
+            example:
+              email: user@gmail.com
+              first_name: user
+              last_name: name
+              password: asdfgh123456
+    responses:
+      200:
+        description: Request Successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+                data:
+                  type: null
+              example:
+                status: 200
+                message: Registrasi berhasil silahkan login
+                data: null
+      400:
+        description: Bad request
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+                data:
+                  type: null
+              example:
+                status: 102
+                message: Paramter email tidak sesuai format
+                data: null
+/login:
+  post:
+    description: Digunakan untuk melakukan login dan mendapatkan authentication berupa JWT (Json Web Token).
+    tags: [Module Membership]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - email
+              - password
+            properties:
+              email:
+                type: string
+              password:
+                type: string
+            example:
+              email: user@gmail.com
+              password: asdfgh123456
+    responses:
+      200:
+        description: Berhasil Login
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+                data:
+                  type: null
+              example:
+                status: 0
+                message: Login Sukses
+                data: 
+                  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXI2QGdtYWlsLmNvbSIsImlhdCI6MTczODg0MDA2OCwiZXhwIjoxNzM4ODgzMjY4fQ.CEkC3fiB6hUW3jnViRSbSJSi2jhfhpmnJQ1tMs-IOfc
+      400:
+        description: Bad request
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+                data:
+                  type: null
+              example:
+                status: 102
+                message: Paramter email tidak sesuai format
+                data: null
+      401:
+        description: Unauthorized
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+                data:
+                  type: null
+              example:
+                status: 103
+                message: Username atau password salah
+                data: null
