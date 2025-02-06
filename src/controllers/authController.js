@@ -92,7 +92,7 @@ const login = async (req, res) => {
       return res.status(400).json({ status: 102, message: error.details[0].message, data: null });
 
     if (error.message === "Username atau password salah")
-      return res.status(401).json({ status: 103, message: "Internal Server Error", data: null });
+      return res.status(401).json({ status: 103, message: "Username atau password salah", data: null });
 
     // default error
     return res.status(500).json({ status: 500, message: "Internal Server Error", data: null });
