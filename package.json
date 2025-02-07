@@ -8,7 +8,9 @@
     "dev": "npx nodemon src/app.js",
     "createdb": "npx sequelize-cli db:create",
     "migrate:up": "npx sequelize-cli db:migrate",
-    "migrate:undo": "npx sequelize-cli db:migrate:undo"
+    "migrate:undo": "npx sequelize-cli db:migrate:undo",
+    "seed:up": "npx sequelize-cli db:seed:all",
+    "seed:undo": "npx sequelize-cli db:seed:undo"
   },
   "keywords": [],
   "author": "",
