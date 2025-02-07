@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Invoice.init({
-    membership_is: DataTypes.INTEGER,
+    membership_id: DataTypes.INTEGER,
     transaction_type_id: DataTypes.INTEGER,
     description: DataTypes.STRING,
     total_amount: DataTypes.DECIMAL

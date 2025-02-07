@@ -9,7 +9,7 @@ module.exports = {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4
       },
-      membership_is: {
+      membership_id: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
