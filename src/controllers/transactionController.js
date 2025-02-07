@@ -97,16 +97,24 @@ const transaction = async (req, res) => {
 };
 
 const getTransactionHistoryByEmail = async (req, res) => {
-  const { email, offset, limit } = req.body;
+  const { email } = req.body;
+  const { offset, limit } = req.query
+  console.log(offset, limit, "offset, limit")
 
   try {
     const results = await sequelize.query(
-      "SELECT * FROM invoices i JOIN memberships m ON i.membership_id = m.id LIMIT ? OFFSET ?",
+      "SELECT * FROM invoices i JOIN memberships m ON i.membership_id = m.id ORDER BY i.created_at",
       {
-        replacements: [offset, limit],
         type: QueryTypes.SELECT,
       }
     );
+    // const results = await sequelize.query(
+    //   "SELECT * FROM invoices i JOIN memberships m ON i.membership_id = m.id ORDER BY i.created_at ASC LIMIT ? OFFSET ?",
+    //   {
+    //     replacements: [offset, limit],
+    //     type: QueryTypes.SELECT,
+    //   }
+    // );
     res.status(200).json({
       status: 0,
       message: "Get History Berhasil",
