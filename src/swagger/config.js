@@ -22,7 +22,8 @@ const options = {
     },
     servers: [
       {
-        url: `https://localhost:${process.env.PORT}/`,
+        // url: `http://localhost:${process.env.PORT}/`,
+        url: `https://api-contract-sims-ppob-production.up.railway.app/`,
       },
     ],
   },
