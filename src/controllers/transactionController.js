@@ -24,6 +24,19 @@ const transaction = async (req, res) => {
         type: QueryTypes.SELECT,
       }
     );
+    const resultsBalance = await sequelize.query(
+      "SELECT balance FROM balances b JOIN memberships m ON b.membership_id = m.id WHERE m.email = ?",
+      {
+        replacements: [email],
+        type: QueryTypes.SELECT,
+      }
+    );
+
+    const today = new Date();
+    const { service_name, service_tariff: total_amount } = resultsService[0];
+    const { id: transaction_type_id, name: transaction_type_name } = resultsTransactionType[0];
+    const membership_id = resultsMembership[0].id;
+    const uuid = uuidv4();
 
     if (!resultsService.length)
       return res.status(400).json({
@@ -32,11 +45,13 @@ const transaction = async (req, res) => {
         data: null,
       });
 
-    const today = new Date();
-    const { service_name, service_tariff: total_amount } = resultsService[0];
-    const { id: transaction_type_id, name: transaction_type_name } = resultsTransactionType[0];
-    const membership_id = resultsMembership[0].id;
-    const uuid = uuidv4();
+    if (resultsBalance[0].balance < total_amount)
+      return res.status(400).json({
+        status: 102,
+        message: "Saldo tidak mencukupi",
+        data: null,
+      });
+
     await sequelize.query(
       "INSERT INTO `invoices` (`id`, `membership_id`, `transaction_type_id`, `description`, `total_amount`, `created_at`, `updated_at`) VALUES (?, ?, ?, ?, ?, ?, ?)",
       {
@@ -52,6 +67,10 @@ const transaction = async (req, res) => {
         type: QueryTypes.INSERT,
       }
     );
+    await sequelize.query("UPDATE balances SET balance = balance - ? WHERE membership_id = ?", {
+      replacements: [total_amount, membership_id],
+      type: QueryTypes.UPDATE,
+    });
 
     const data = {
       invoice_number: uuid,
