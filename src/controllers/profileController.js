@@ -80,15 +80,25 @@ const updateProfileImage = (req, res) => {
   multerUpload.single("file")(req, res, async (error) => {
     if (error) {
       res.status(400).json({
+        status: 100,
         message: "Gagal mengupload file!",
-        file: req.file,
+        data: null
       });
       return;
     }
     if (!req.file) {
       res.status(400).json({
+        status: 100,
         message: "Pastikan file sudah terpilih!",
-        file: req.file,
+        data: null
+      });
+      return;
+    }
+    if (req.file.mimetype !== "image/png" && req.file.mimetype !== "image/jpeg") {
+      res.status(400).json({
+        status: 102,
+        message: "Format Image tidak sesuai",
+        data: null
       });
       return;
     }
