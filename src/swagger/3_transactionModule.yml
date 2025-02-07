@@ -213,3 +213,92 @@ tags:
                 status: 108
                 message: Token tidak tidak valid atau kadaluwarsa
                 data: null
+/transaction/history:
+  get:
+    description: Digunakan untuk mendapatkan informasi history transaksi. Service ini harus menggunakan Bearer Token JWT untuk mengaksesnya.
+    tags: [Module Transaction]
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: query
+        name: offset
+        schema:
+          type: integer
+          default: 0
+        required: true
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          default: 3
+        required: true
+    responses:
+      200:
+        description: Get History Transaksi berhasil
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+                data:
+                  offset: 
+                    type: integer
+                  limit: 
+                    type: integer
+                  records: 
+                    type: array
+                    items:
+                      properties:
+                        invoice_number:
+                          type: string
+                        transaction_type:
+                          type: string
+                        description:
+                          type: string
+                        total_amount:
+                          type: integer
+                        created_on:
+                          type: date
+              example:
+                status: 0
+                message: Top Up Balance berhasil
+                data: 
+                  offset: 0
+                  limit: 3
+                  records: 
+                    - invoice_number: 0b4252d8-ed8f-427e-bda8-e726b09739e0
+                      transaction_type: PAYMENT
+                      description: Qurban
+                      total_amount: 200000
+                      created_on: 2025-02-07 20:20:26
+                    - invoice_number: 0b4252d8-ed8f-427e-bda8-e726b09739e0
+                      transaction_type: PAYMENT
+                      description: Qurban
+                      total_amount: 200000
+                      created_on: 2025-02-07 20:20:26
+                    - invoice_number: 0b4252d8-ed8f-427e-bda8-e726b09739e0
+                      transaction_type: PAYMENT
+                      description: Qurban
+                      total_amount: 200000
+                      created_on: 2025-02-07 20:20:26
+      401:
+        description: Unauthorized
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+                data:
+                  type: null
+              example:
+                status: 108
+                message: Token tidak tidak valid atau kadaluwarsa
+                data: null
