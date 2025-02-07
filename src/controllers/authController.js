@@ -32,10 +32,21 @@ const signup = async (req, res) => {
         type: QueryTypes.INSERT,
       }
     );
+
+    // create the balance for the membership
+    const membership_id = results[0]
+    await sequelize.query(
+      "INSERT INTO `balances` (`membership_id`, `created_at`, `updated_at`) VALUES (?, ?, ?)",
+      {
+        replacements: [membership_id, today, today],
+        type: QueryTypes.INSERT,
+      }
+    );
     res
       .status(200)
       .json({ status: 200, message: "Registrasi berhasil silahkan login", data: null });
   } catch (error) {
+    console.log(error)
     // joi errors
     if (error.details)
       return res.status(400).json({ status: 102, message: error.details[0].message, data: null });
