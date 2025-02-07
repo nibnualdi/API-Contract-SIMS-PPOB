@@ -5,13 +5,8 @@ const getABalanceByEmail = async (req, res) => {
   const { email } = req.body;
 
   try {
-    const resultsEmail = await sequelize.query("SELECT id,email FROM memberships WHERE email = ?", {
+    const results = await sequelize.query("SELECT balance FROM balances b JOIN memberships m ON b.membership_id = m.id WHERE email = ?", {
       replacements: [email],
-      type: QueryTypes.SELECT,
-    });
-    const membership_id = resultsEmail[0].id;
-    const results = await sequelize.query("SELECT balance FROM balances WHERE membership_id = ?", {
-      replacements: [membership_id],
       type: QueryTypes.SELECT,
     });
     res.status(200).json({
