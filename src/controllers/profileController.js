@@ -16,7 +16,7 @@ const getAProfile = async (req, res) => {
     );
     res.status(200).json({ status: 200, message: "Sukses", data: results[0] });
   } catch (error) {
-    if (error.name === "JsonWebTokenError")
+    if (error.name === "JsonWebTokenError" || error.name === "TokenExpiredError")
       return res.status(401).json({
         status: 108,
         message: "Token tidak valid atau kadaluwarsa",
@@ -48,7 +48,7 @@ const updateAProfile = async (req, res) => {
 
     res.status(200).json({ status: 200, message: "Sukses", data: results[0] });
   } catch (error) {
-    if (error.name === "JsonWebTokenError")
+    if (error.name === "JsonWebTokenError" || error.name === "TokenExpiredError")
       return res.status(401).json({
         status: 108,
         message: "Token tidak valid atau kadaluwarsa",
@@ -121,7 +121,7 @@ const updateProfileImage = (req, res) => {
 
       res.status(200).json({ status: 200, message: "Sukses", data: results[0] });
     } catch (error) {
-      if (error.name === "JsonWebTokenError")
+      if (error.name === "JsonWebTokenError" || error.name === "TokenExpiredError")
         return res.status(401).json({
           status: 108,
           message: "Token tidak valid atau kadaluwarsa",

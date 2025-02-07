@@ -9,7 +9,8 @@ const accessTokenOnly = (req, res, next) => {
     req.body.email = jwtRes.email;
     next();
   } catch (error) {
-    if (error.name === "JsonWebTokenError")
+    console.log(error)
+    if (error.name === "JsonWebTokenError" || error.name === "TokenExpiredError")
       return res.status(401).json({
         status: 108,
         message: "Token tidak valid atau kadaluwarsa",
