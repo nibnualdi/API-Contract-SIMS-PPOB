@@ -52,3 +52,76 @@ tags:
                 status: 108
                 message: Token tidak tidak valid atau kadaluwarsa
                 data: null
+/topup:
+  post:
+    description: Digunakan untuk melakukan top up balance / saldo dari User. Service ini harus menggunakan Bearer Token JWT untuk mengaksesnya.
+    tags: [Module Transaction]
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - top_up_amount
+            properties:
+              top_up_amount:
+                type: integer
+            example:
+              top_up_amount: 10000
+    responses:
+      200:
+        description: Request Successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+                data:
+                  balance: 
+                  type: integer
+              example:
+                status: 0
+                message: Top Up Balance berhasil
+                data: 
+                  balance: 20000
+      400:
+        description: Unauthorized
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+                data:
+                  type: null
+              example:
+                status: 102
+                message: Paramter amount hanya boleh angka dan tidak boleh lebih kecil dari 0
+                data: null
+      401:
+        description: Unauthorized
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+                data:
+                  type: null
+              example:
+                status: 108
+                message: Token tidak tidak valid atau kadaluwarsa
+                data: null
