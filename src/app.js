@@ -2,6 +2,7 @@ console.log("[server]: Wait a moment!");
 
 import express from "express";
 import dotenv from "dotenv";
+import cors from "cors";
 import routers from "./routers/router.js";
 import swagger from "./swagger/config.js";
 
@@ -9,6 +10,7 @@ dotenv.config();
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
