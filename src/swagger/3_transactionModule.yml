@@ -125,3 +125,91 @@ tags:
                 status: 108
                 message: Token tidak tidak valid atau kadaluwarsa
                 data: null
+/transaction:
+  post:
+    description: Digunakan untuk melakukan transaksi dari services / layanan yang tersedia. Service ini harus menggunakan Bearer Token JWT untuk mengaksesnya.
+    tags: [Module Transaction]
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - service_code
+            properties:
+              service_code:
+                type: string
+            example:
+              service_code: QURBAN
+    responses:
+      200:
+        description: Transaksi Berhasil
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+                data:
+                  invoice_number: 
+                    type: string
+                  service_code: 
+                    type: string
+                  service_name: 
+                    type: string
+                  transaction_type: 
+                    type: string
+                  total_amount: 
+                    type: integer
+                  created_on: 
+                    type: date
+              example:
+                status: 0
+                message: Top Up Balance berhasil
+                data: 
+                  invoice_number: 0b4252d8-ed8f-427e-bda8-e726b09739e0
+                  service_code: QURBAN
+                  service_name: Qurban
+                  transaction_type: PAYMENT
+                  total_amount: 200000
+                  created_on: 2025-02-07 20:20:26
+      400:
+        description: Unauthorized
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+                data:
+                  type: null
+              example:
+                status: 102
+                message: Service ataus Layanan tidak ditemukan
+                data: null
+      401:
+        description: Unauthorized
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+                data:
+                  type: null
+              example:
+                status: 108
+                message: Token tidak tidak valid atau kadaluwarsa
+                data: null
