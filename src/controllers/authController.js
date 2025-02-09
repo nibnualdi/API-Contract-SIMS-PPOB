@@ -52,8 +52,8 @@ const signup = async (req, res) => {
       return res.status(400).json({ status: 102, message: error.details[0].message, data: null });
 
     // database errors
-    const column = error?.errors[0]?.path;
-    const errorType = error?.errors[0]?.type;
+    const column = error?.errors[0]?.path || '';
+    const errorType = error?.errors[0]?.type || '';
     console.log(error);
     if (errorType === "unique violation")
       return res
