@@ -47,6 +47,7 @@ const signup = async (req, res) => {
       .json({ status: 200, message: "Registrasi berhasil silahkan login", data: null });
   } catch (error) {
     console.log("message:", error?.errors[0]?.message)
+    console.log("original:", error?.original)
     // joi errors
     if (error.details)
       return res.status(400).json({ status: 102, message: error.details[0].message, data: null });
@@ -55,7 +56,7 @@ const signup = async (req, res) => {
     if (!error || error?.errors[0]) return res.status(500).json({ status: 500, message: "Internal Server Error", data: null })
     const column = error?.errors[0]?.path || '';
     const errorType = error?.errors[0]?.message || '';
-    if (errorType === "email must be unique")
+    if (errorType.includes("must be unique"))
       return res
         .status(400)
         .json({ status: 400, message: `${column} sudah terdaftar`, data: null });
