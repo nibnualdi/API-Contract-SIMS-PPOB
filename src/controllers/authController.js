@@ -59,7 +59,7 @@ const signup = async (req, res) => {
     if (errorType.includes("must be unique"))
       return res
         .status(400)
-        .json({ status: 400, message: `${column} sudah terdaftar`, data: null });
+        .json({ status: 400, message: `email sudah terdaftar`, data: null });
     return res.status(500).json({ status: 500, message: "Internal Server Error", data: null });
   }
 };
