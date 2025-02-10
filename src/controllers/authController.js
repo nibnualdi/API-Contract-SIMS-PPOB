@@ -52,13 +52,13 @@ const signup = async (req, res) => {
       return res.status(400).json({ status: 102, message: error.details[0].message, data: null });
 
     // database errors
-    // if (!error) return res.status(500).json({ status: 500, message: "Internal Server Error", data: null })
-    // const column = error?.errors[0]?.path || '';
-    // const errorType = error?.errors[0]?.type || '';
-    // if (errorType === "unique violation")
-    //   return res
-    //     .status(400)
-    //     .json({ status: 400, message: `${column} sudah terdaftar`, data: null });
+    if (!error || error?.errors[0]) return res.status(500).json({ status: 500, message: "Internal Server Error", data: null })
+    const column = error?.errors[0]?.path || '';
+    const errorType = error?.errors[0]?.type || '';
+    if (errorType === "unique violation")
+      return res
+        .status(400)
+        .json({ status: 400, message: `${column} sudah terdaftar`, data: null });
     return res.status(500).json({ status: 500, message: "Internal Server Error", data: null });
   }
 };
