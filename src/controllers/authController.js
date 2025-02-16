@@ -1,29 +1,13 @@
 import sequelize from "../config/connection.js";
-import Joi from "joi";
 import jwt from "jsonwebtoken";
 import { QueryTypes } from "sequelize";
-
-const schema = Joi.object({
-  first_name: Joi.string().required().messages({
-    "any.required": "Parameter first_name harus di isi",
-  }),
-  last_name: Joi.string().required().messages({
-    "any.required": "Parameter last_name harus di isi",
-  }),
-  email: Joi.string().email().required().messages({
-    "any.required": "Parameter email harus di isi",
-    "string.email": "Paramter email tidak sesuai format",
-  }),
-  password: Joi.string().min(8).required().messages({
-    "any.required": "Parameter password harus di isi",
-  }),
-});
+import authSchema from "../validators/authValidator.js";
 
 const signup = async (req, res) => {
   const { first_name, last_name, email, password } = req.body;
 
   try {
-    await schema.validateAsync({ first_name, last_name, email, password });
+    await authSchema.validateAsync({ first_name, last_name, email, password });
     const today = new Date();
     const results = await sequelize.query(
       "INSERT INTO `memberships` (`id`, `first_name`, `last_name`, `email`, `password`, `profile_image`, `created_at`, `updated_at`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)",
@@ -71,7 +55,7 @@ const generateToken = (data) => {
 const login = async (req, res) => {
   const { email, password } = req.body;
   try {
-    await schema
+    await authSchema
       .fork(["first_name", "last_name"], (schema) => schema.optional())
       .validateAsync({ email, password });
     const results = await sequelize.query(
