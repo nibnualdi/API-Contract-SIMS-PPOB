@@ -46,16 +46,11 @@ const signup = async (req, res) => {
       .status(200)
       .json({ status: 200, message: "Registrasi berhasil silahkan login", data: null });
   } catch (error) {
-    // console.log("errors[0]:", error?.errors[0])
-    // console.log("message:", error?.errors[0]?.message)
-    // console.log("original:", error?.original)
     // joi errors
     if (error.details)
       return res.status(400).json({ status: 102, message: error.details[0].message, data: null });
 
     // database errors
-    // if (!error || error?.errors[0]) return res.status(500).json({ status: 500, message: "Internal Server Error", data: null })
-    // const column = error?.errors[0]?.path || '';
     const errorType = error?.errors[0]?.message || '';
     if (errorType.includes("must be unique"))
       return res
