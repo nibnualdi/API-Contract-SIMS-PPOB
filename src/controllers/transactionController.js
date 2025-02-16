@@ -81,7 +81,7 @@ const transaction = async (req, res) => {
       created_on: today,
     };
 
-    res.status(200).json({ status: 200, message: "Sukses", data });
+    res.status(200).json({ status: 0, message: "Transaksi berhasil", data });
   } catch (error) {
     console.log(error);
     if (error.name === "JsonWebTokenError" || error.name === "TokenExpiredError")

@@ -28,7 +28,7 @@ const signup = async (req, res) => {
     );
     res
       .status(200)
-      .json({ status: 200, message: "Registrasi berhasil silahkan login", data: null });
+      .json({ status: 0, message: "Registrasi berhasil silahkan login", data: null });
   } catch (error) {
     // joi errors
     if (error.details)
@@ -72,7 +72,7 @@ const login = async (req, res) => {
       email: results[0].email,
     });
     res.status(200).json({
-      status: 200,
+      status: 0,
       message: "Login Sukses",
       data: {
         token: accessToken,

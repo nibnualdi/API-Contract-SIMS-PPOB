@@ -14,7 +14,7 @@ const getAProfile = async (req, res) => {
         type: QueryTypes.SELECT,
       }
     );
-    res.status(200).json({ status: 200, message: "Sukses", data: results[0] });
+    res.status(200).json({ status: 0, message: "Sukses", data: results[0] });
   } catch (error) {
     if (error.name === "JsonWebTokenError" || error.name === "TokenExpiredError")
       return res.status(401).json({
@@ -46,7 +46,7 @@ const updateAProfile = async (req, res) => {
       }
     );
 
-    res.status(200).json({ status: 200, message: "Sukses", data: results[0] });
+    res.status(200).json({ status: 0, message: "Update Pofile berhasil", data: results[0] });
   } catch (error) {
     if (error.name === "JsonWebTokenError" || error.name === "TokenExpiredError")
       return res.status(401).json({
@@ -119,7 +119,7 @@ const updateProfileImage = (req, res) => {
         }
       );
 
-      res.status(200).json({ status: 200, message: "Sukses", data: results[0] });
+      res.status(200).json({ status: 0, message: "Update Profile Image berhasil", data: results[0] });
     } catch (error) {
       if (error.name === "JsonWebTokenError" || error.name === "TokenExpiredError")
         return res.status(401).json({

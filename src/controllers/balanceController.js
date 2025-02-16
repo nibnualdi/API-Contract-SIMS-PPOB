@@ -34,7 +34,7 @@ const topup = async (req, res) => {
   const uuid = uuidv4();
   const today = new Date();
 
-  if (top_up_amount < 0)
+  if (top_up_amount < 0 || !Number(top_up_amount))
     return res.status(400).json({
       status: 102,
       message: "Paramter amount hanya boleh angka dan tidak boleh lebih kecil dari 0",
@@ -79,7 +79,7 @@ const topup = async (req, res) => {
       }
     );
 
-    res.status(200).json({ status: 200, message: "Sukses", data: results[0].balance });
+    res.status(200).json({ status: 0, message: "Top Up Balance berhasil", data: results[0].balance });
   } catch (error) {
     console.log(error);
     if (error.name === "JsonWebTokenError" || error.name === "TokenExpiredError")

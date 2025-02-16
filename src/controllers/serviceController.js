@@ -9,7 +9,7 @@ const getServices = async (req, res) => {
         type: QueryTypes.SELECT,
       }
     );
-    res.status(200).json({ status: 200, message: "Sukses", data: results });
+    res.status(200).json({ status: 0, message: "Sukses", data: results });
   } catch (error) {
     console.log(error);
     if (error.name === "JsonWebTokenError" || error.name === "TokenExpiredError")
